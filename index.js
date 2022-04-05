@@ -19,7 +19,7 @@ app.use('/random', routerRandom)
 app.use('/users', routerUsers)
 
 
-app.get('/', (req, res) => { res.send('Bienvenido a nuestro backend') })
+app.get('/', (req, res) => { res.send('Backend') })
 
 const run = async () => {
     await mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
