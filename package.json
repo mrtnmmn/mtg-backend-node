@@ -17,7 +17,8 @@
     "express": "^4.17.3",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.2.8",
+    "mongodb": "^4.5.0",
+    "mongoose": "^6.2.10",
     "morgan": "^1.10.0",
     "node-fetch": "^3.2.3",
     "nodemon": "^2.0.15"

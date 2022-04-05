@@ -5,6 +5,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 
 import { router as routerRandom } from './routers/random.js'
+import { router as routerUsers } from './routers/user.js'
 
 dotenv.config();
 var app = express();
@@ -15,9 +16,10 @@ app.use(cors())
 app.use(morgan('dev'))
 
 app.use('/random', routerRandom)
+app.use('/users', routerUsers)
 
 const run = async () => {
-    //await mongoose.connect(process.env.URL_BASEDATOS, { useNewUrlParser: true, useUnifiedTopology: true })
+    mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     await app.listen(process.env.PUERTO_SERVIDOR)
     console.log("Servidor arrancado")
 }

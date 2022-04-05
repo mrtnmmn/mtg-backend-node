@@ -2,7 +2,7 @@ import fetch from 'node-fetch'
 
 async function getOne(req,res) {
     try{
-        
+
         const result = await fetch('https://api.scryfall.com/cards/random')
         const data = await result.json()
 
@@ -14,6 +14,5 @@ async function getOne(req,res) {
     }
 
 }
-
 
 export { getOne }
