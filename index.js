@@ -22,7 +22,7 @@ app.use('/users', routerUsers)
 app.get('/', (req, res) => { res.send('Bienvenido a nuestro backend') })
 
 const run = async () => {
-    //await mongoose.connect(process.env.URL_BASEDATOS, { useNewUrlParser: true, useUnifiedTopology: true })
+    await mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     await app.listen(process.env.PUERTO_SERVIDOR)
     console.log("Servidor arrancado")
 }
