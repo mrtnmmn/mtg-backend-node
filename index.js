@@ -18,6 +18,7 @@ app.use(morgan('dev'))
 app.use('/random', routerRandom)
 app.use('/users', routerUsers)
 
+app.get('/', (req, res) => (res.status(200).json({acction:'salute', message: 'Hello! Wellcome to MagikaTG backend'})))
 
 const run = async () => {
     await mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
