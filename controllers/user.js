@@ -1,5 +1,5 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
-import { Users } from '../models/user.js'
+import { User } from '../models/user.js'
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import Joi from 'joi';
@@ -12,10 +12,9 @@ const schemaLogin= Joi.object({
 
 async function getAll(req,res) {
     try{
-
-        let users = await Users.find();
-        res.status(200).json({action:'get all', data: users}) 
-        console.log(users)
+        let user = await User.find();
+        res.status(200).json({action:'get all', data: user}) 
+        console.log(user)
 
     }catch(err){
 
@@ -37,7 +36,7 @@ async function login(req, res){
     }
 
     // Comprobar que el usuario si existe
-    let existingUser = await Users.findOne({email:req.body.email})
+    let existingUser = await User.findOne({email:req.body.email})
     if(!existingUser) return res.status(400).json({accion:'save', mensaje:'ERROR: Unexisting user'}) 
    
    
@@ -73,7 +72,7 @@ async function register(req, res){
 
     // Comprobar que el usuario no existe antes
     try {
-        let existingUser = await Users.findOne({email:req.body.email})
+        let existingUser = await User.findOne({email:req.body.email})
         if(existingUser) return res.status(400).json({accion:'save', mensaje:'ERROR: user already exists'}) 
     }
     catch (err) { 
@@ -84,7 +83,7 @@ async function register(req, res){
     const salt = await bcrypt.genSalt(10)
     const hashPassword = await bcrypt.hash(req.body.password, salt)
 
-    const user = new Users(req.body)
+    const user = new User(req.body)
     user.password = hashPassword
 
     try{

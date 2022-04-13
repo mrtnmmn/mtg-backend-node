@@ -7,9 +7,10 @@ let UsersSchema = new Schema(
         username: String,
         email: String,
         password: String,
+        decks: [{type: Schema.ObjectId, ref: 'Deck'}]
     }
 )
 
-const Users = mongoose.model("Users", UsersSchema);
+const User = mongoose.model("User", UsersSchema);
 
-export { Users };
+export { User };
