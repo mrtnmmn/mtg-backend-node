@@ -24,7 +24,7 @@ app.get('/', (req, res) => (res.status(200).json({acction:'salute', message: 'He
 
 const run = async () => {
     await mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    await app.listen(process.env.PUERTO_SERVIDOR || 5300)
+    await app.listen(process.env.PORT || 5300)
 
     console.log("Servidor arrancado")
 }
