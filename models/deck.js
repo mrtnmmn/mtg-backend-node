@@ -6,7 +6,7 @@ let DeckSchema = new Schema (
     {
         _id: {type: Schema.ObjectId, auto:true},
         deckName: String,
-        cards: Array,
+        cards: [String],
         user: {type: Schema.ObjectId, ref: 'User'}
     }
 )
