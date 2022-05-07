@@ -19,10 +19,49 @@ async function getAll(req,res) {
     }catch(err){
 
         console.log(err)
-        res.status(500).json({action:'get one', messaje:'error'}) 
+        res.status(500).json({action:'get all', messaje:'error'}) 
         
     }
 
+}
+
+async function addDeck(req, res) {
+
+    try {
+
+        let deckName 
+
+    } catch(err) {
+        res.status(500).json({action:'add deck', messaje:'error'}) 
+    }
+}
+
+async function getUserId(req, res) {
+    try { 
+
+        let userEmail = req.body.email
+        let foundUser = await User.findOne({email:userEmail})
+
+        if (foundUser) {
+            res.status(200).json({action: 'get user id', data: foundUser})
+        } else { 
+            res.status(300).json({action: 'get user id', messaje: 'there is no user registered with this email'})
+        }
+        
+    } catch(err) {
+        console.log(err)
+        res.status(500).json({action:'get user id', messaje:'error'}) 
+    }
+}
+
+async function getAllDecks(req,res) {
+    try {
+
+
+    } catch(err) {
+        console.log(err)
+        res.status(500).json({action:'get all decks', messaje: 'error'})
+    }
 }
 
 async function login(req, res){
@@ -95,4 +134,4 @@ async function register(req, res){
     
 }
 
-export { getAll, login, register }
+export { getAll, login, register, getUserId }

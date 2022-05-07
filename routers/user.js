@@ -6,5 +6,6 @@ import * as controller from '../controllers/user.js';
 router.get('/', controller.getAll)
 router.post('/login', controller.login)
 router.post('/register', controller.register)
+router.get('/findByEmail', controller.getUserId)
 
 export { router };
