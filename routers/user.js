@@ -6,6 +6,9 @@ import * as controller from '../controllers/user.js';
 router.get('/', controller.getAll)
 router.post('/login', controller.login)
 router.post('/register', controller.register)
-router.get('/findByEmail', controller.getUserId)
+router.post('/findByEmail', controller.getUserId)
+router.post('/findAllDecks', controller.getAllDecks)
+router.delete('/deleteOneDeck', controller.deleteOneDeck)
+router.put('/addOneDeck', controller.addOneDeck)
 
 export { router };

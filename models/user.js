@@ -7,7 +7,7 @@ let UsersSchema = new Schema(
         username: String,
         email: String,
         password: String,
-        decks: [{type: Schema.ObjectId, ref: 'Deck'}]
+        decks: [String]
     }
 )
 

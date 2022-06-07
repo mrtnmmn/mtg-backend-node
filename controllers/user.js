@@ -25,17 +25,6 @@ async function getAll(req,res) {
 
 }
 
-async function addDeck(req, res) {
-
-    try {
-
-        let deckName 
-
-    } catch(err) {
-        res.status(500).json({action:'add deck', messaje:'error'}) 
-    }
-}
-
 async function getUserId(req, res) {
     try { 
 
@@ -57,6 +46,18 @@ async function getUserId(req, res) {
 async function getAllDecks(req,res) {
     try {
 
+        let userId = req.body._id
+        let foundUser = await User.findOne({_id:userId})
+
+        if (foundUser) {
+            if (foundUser.decks) {
+                res.status(200).json({action: 'get all decks', data: foundUser.decks})
+            } else {
+                res.status(300).json({action: 'get all decks', messaje: 'the user has no decks'})
+            }
+        } else { 
+            res.status(300).json({action: 'get all decks', messaje: 'the id provided was not correct'})
+        }
 
     } catch(err) {
         console.log(err)
@@ -129,9 +130,48 @@ async function register(req, res){
         let savedUser = await user.save();
         res.status(200).json({accion:'save', datos: savedUser}) 
     }catch(err){
-        res.status(500).json({accion:'save', mensaje:'ERROR: ' + err}) 
+        res.status(500).json({accion:'save', message:'ERROR: ' + err}) 
     }
     
 }
 
-export { getAll, login, register, getUserId }
+async function addOneDeck(req, res){
+
+    let deckId = req.body.deckId
+    let userId = req.body._id
+
+    const filter = { _id: userId };
+    const update = { $push: { decks: deckId } };
+
+    try {
+
+        let doc = await User.findOneAndUpdate(filter, update);
+
+        res.status(200).json({action: 'add one deck', user: doc})
+
+        
+    } catch (err) {
+        res.status(500).json({accion:'add one deck', mensaje: 'Error: ' + err})
+    }
+}
+
+async function deleteOneDeck(req, res) {
+
+    let deckId = req.body.deckId
+    let userId = req.body._id
+
+    const filter = { _id: userId };
+    const update = { $pull: { decks: deckId } };
+
+    try {
+
+        let doc = await User.findOneAndUpdate(filter, update);
+        res.status(200).json({action: 'delete one deck', user: doc})
+
+        
+    } catch (err) {
+        res.status(500).json({accion:'delete one deck', mensaje: 'Error: ' + err})
+    }
+}
+
+export { getAll, login, register, getUserId, getAllDecks, addOneDeck, deleteOneDeck }
