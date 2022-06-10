@@ -7,7 +7,8 @@ let UsersSchema = new Schema(
         username: String,
         email: String,
         password: String,
-        decks: [String]
+        decks: [String], 
+        admin: {type: Boolean, auto: false}
     }
 )
 

@@ -174,4 +174,50 @@ async function deleteOneDeck(req, res) {
     }
 }
 
-export { getAll, login, register, getUserId, getAllDecks, addOneDeck, deleteOneDeck }
+async function setAdmin(req, res) {
+    let userId = req.body._id 
+
+    const filter = { _id: userId };
+    const update = { admin: true };
+
+    try {
+
+        let doc = await User.findOneAndUpdate(filter, update);
+        res.status(200).json({action: 'set admin', user: doc})
+        
+    } catch (err) {
+        res.status(500).json({accion:'set admin', mensaje: 'Error: ' + err})
+    }
+
+} 
+
+async function isAdmin(req, res) {
+    let userId = req.body._id
+
+    const filter = { _id: userId }
+
+    try {
+        let doc = await User.findOne(filter);
+        res.status(200).json({action: 'is admin', admin: doc.admin})
+    } catch (err) {
+        res.status(500).json({accion:'is admin', mensaje: 'Error: ' + err})
+    }
+}
+
+async function getOne(req, res) {
+
+    let userEmail = req.body.email
+
+    const filter = { email: userEmail}
+
+    try {
+        let doc = await User.findOne(filter);
+        //res.status(200).json({action: 'get one', user: {admin: doc.admin, userId: doc._id} })
+        res.status(200).json({action: 'get one', user: { admin: doc.admin, userId: doc._id} })
+    } catch (err) {
+        res.status(500).json({accion:'get one', mensaje: 'Error: ' + err})
+    }
+
+}
+
+export { getAll, login, register, getUserId, getAllDecks, addOneDeck, deleteOneDeck, setAdmin, isAdmin, getOne }

@@ -44,9 +44,18 @@ async function addOne(req,res) {
 
     const newDeck = new Deck(req.body)
 
+
+    console.log(newDeck)
+
     try {
-        let savedDeck = await newDeck.save()
-        res.status(200).json({action: 'add one deck', data: savedDeck})
+        if (newDeck._id) {
+            let updatedDeck = await Deck.findOneAndUpdate({_id: newDeck.id}, {newDeck})
+            res.status(200).json({action: 'add one deck', data: updatedDeck})
+        } else {
+            let savedDeck = await newDeck.save()
+            res.status(200).json({action: 'add one deck', data: savedDeck})
+        }
+
     } catch (err) {
         res.status(500).json({action: 'add one deck', error: 'ERROR: ' + err})
     }
