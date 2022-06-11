@@ -19,7 +19,8 @@ let DeckSchema = new Schema (
             },
             cmc: Number,
             cardType: String,
-            color: String
+            color: String,
+            cardPrice: Number
         }],
         cardCosts: {
             c0: Number,
@@ -57,7 +58,7 @@ let DeckSchema = new Schema (
             black: Number,
             multicolor: Number
         },
-        deckLegality: String
+        deckPrice: Number
     }
 )
 

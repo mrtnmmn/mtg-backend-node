@@ -42,16 +42,20 @@ async function getAllFromUser(req,res) {
 
 async function addOne(req,res) {
 
-    const newDeck = new Deck(req.body)
-
+    const newDeck = new Deck(req.body.deck)
+    const editing = req.body.editing
 
     console.log(newDeck)
 
     try {
-        if (newDeck._id) {
-            let updatedDeck = await Deck.findOneAndUpdate({_id: newDeck.id}, {newDeck})
+
+        if (editing) {
+            console.log('update')
+            let updatedDeck = await Deck.replaceOne({_id: newDeck._id}, newDeck)
+            console.log(updatedDeck)
             res.status(200).json({action: 'add one deck', data: updatedDeck})
         } else {
+            console.log('new')
             let savedDeck = await newDeck.save()
             res.status(200).json({action: 'add one deck', data: savedDeck})
         }
