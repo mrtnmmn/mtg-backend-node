@@ -1,5 +1,4 @@
 import { Deck } from '../models/deck.js'
-import { User } from '../models/user.js'
 
 async function getAll(req, res) {
 
