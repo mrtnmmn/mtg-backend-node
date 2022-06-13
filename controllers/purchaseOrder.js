@@ -13,7 +13,7 @@ async function getAll(req, res) {
 
 async function addOne(req, res) {
 
-    let newPurchaseOrder = new PurchaseOrder(req.body)
+    let newPurchaseOrder = new PurchaseOrder(req.body.order)
 
     try {
         let savedPurchaseOrder = await newPurchaseOrder.save()
@@ -114,6 +114,8 @@ async function checkStock(req, res) {
                     if (card.cardQuantity === 0 ) {
                         stock = false
                     }
+                } else {
+                    stock = false
                 }
             }
         }
