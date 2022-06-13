@@ -8,6 +8,7 @@ import { router as routerRandom } from './routers/random.js'
 import { router as routerUser } from './routers/user.js'
 import { router as routerDeck } from './routers/deck.js'
 import { router as routerCard } from './routers/card.js'
+import { router as routerPurchases } from './routers/purchaseOrder.js'
 
 dotenv.config();
 var app = express();
@@ -21,6 +22,7 @@ app.use('/random', routerRandom)
 app.use('/user', routerUser)
 app.use('/deck', routerDeck)
 app.use('/card', routerCard)
+app.use('/purchaseOrders', routerPurchases)
 
 app.get('/', (req, res) => (res.status(200).json({acction:'salute', message: 'Hello! Wellcome to MagikaTG backend'})))
 
