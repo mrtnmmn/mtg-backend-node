@@ -15,6 +15,8 @@ async function getOneFromId(req, res) {
 
     let deckId = req.body._id
 
+    console.log(typeof deckId)
+
     try {
         let deck = await Deck.findById(deckId)
         console.log(deck)

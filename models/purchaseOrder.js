@@ -4,8 +4,10 @@ const {Schema} = mongoose
 
 let PurchaseOrderSchema = new Schema (
     {
-        _id: String,
-        purchaseType: String
+        _id: {type: Schema.ObjectId, auto:true},
+        deckIds: [String],
+        cardIds: [String],
+        userId: String 
     }
 )
 

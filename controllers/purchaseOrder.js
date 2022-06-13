@@ -27,42 +27,45 @@ async function addOne(req, res) {
 async function deleteOne(req, res) {
     
     let purchaseId = req.body._id
-    let purchaseType = req.body.purchaseType
 
-    console.log('deleting')
-    console.log(purchaseId)
+    let purchaseOrder = await PurchaseOrder.findById(purchaseId)
 
     try {
-        if (purchaseType === 'deck') {
-
-            console.log('deleting deck')
-
+        for (const deckId of purchaseOrder.deckIds ) {
             //find comlplete selected deck
-            let completeDeleteDeck = await Deck.findById(purchaseId)
+            let completeDeleteDeck = await Deck.findById(deckId)
             
             //substract each card 
-            completeDeleteDeck.cards.forEach(deckCard => {
-
-                console.log(deckCard.cardName)
-
+            for (const deckCard of completeDeleteDeck.cards) {
                 for (let i = 0; i < deckCard.cardQuantity; i++ ) {
                     try {
-                        let updatedCard = Card.findOneAndUpdate({_id: deckCard.cardId}, { $inc: {cardQuantity: -1 }}).exec()
-                        console.log('update card: ' + updatedCard)
+                        let updatedCard = await Card.findOneAndUpdate({_id: deckCard.cardId}, { $inc: {cardQuantity: -1 }}).exec()
                     } catch (err) {
                         console.log(err)
                     }
                 }
-                
-            });
+            }
+            /*
+            completeDeleteDeck.cards.forEach(deckCard => {
 
-            let deletedPurchase = await PurchaseOrder.findByIdAndDelete(purchaseId)
-            res.status(200).json({action: 'delete one purchase', data: deletedPurchase})
-        } else {
-            let updatedCard = await Card.findByIdAndUpdate({_id: purchaseId}, { $inc: {cardQuantity: -1 }}).exec()
-            let deletedPurchase = await PurchaseOrder.findByIdAndDelete(purchaseId)
-            res.status(200).json({action: 'delete one purchase', data: updatedCard})
+                for (let i = 0; i < deckCard.cardQuantity; i++ ) {
+                    try {
+                        let updatedCard = Card.findOneAndUpdate({_id: deckCard.cardId}, { $inc: {cardQuantity: -1 }}).exec()
+                    } catch (err) {
+                        console.log(err)
+                    }
+                }
+            });
+            */
         }
+
+        for (const cardId of purchaseOrder.cardIds) {
+            let updatedCard = await Card.findByIdAndUpdate({_id: cardId}, { $inc: {cardQuantity: -1 }}).exec()
+        }
+
+        let deletedPurchase = await PurchaseOrder.findByIdAndDelete(purchaseId)
+
+        res.status(200).json({action: 'delete one purchase', data: 'success'})
     } catch(err) {
         res.status(500).json({action: 'delete one purchase', err: "ERROR: " + err})
     }
@@ -72,48 +75,52 @@ async function deleteOne(req, res) {
 async function checkStock(req, res) {
 
     let purchaseId = req.body._id
-    let purchaseType = req.body.purchaseType
+
+    let purchaseOrder = await PurchaseOrder.findById(purchaseId)
 
     let stock = true
 
     try {
-        if (purchaseType === 'deck') {
-            //find comlplete selected deck
-            let completeDeleteDeck = await Deck.findById(purchaseId)
-            
-            //substract each card 
-            for (const deckCard of completeDeleteDeck.cards) {
 
-                let card = await Card.findById(deckCard.cardId)
+        console.log(purchaseOrder)
 
+        if (purchaseOrder.deckIds !== null && purchaseId !== purchaseOrder.deckIds !== []) {
+            for (const deckId of purchaseOrder.deckIds ) {
+                //find comlplete selected deck
+                let completeDeleteDeck = await Deck.findById(deckId)
+                
+                if (completeDeleteDeck !== null) {
+                    //substract each card 
+                    for(const deckCard of completeDeleteDeck.cards) {
+    
+                        let card = await Card.findById(deckCard.cardId)
+    
+                        if (card !== null) {
+                            if (card.cardQuantity < deckCard.cardQuantity) {
+                                stock = false
+                            }
+                        } else {
+                            stock = false
+                        }
+                    };
+                }
+            }
+        }
+
+        if (purchaseOrder.cardIds) {
+            for (const cardId of purchaseOrder.cardIds) {
+                let card = await Card.findById(cardId)
                 if (card !== null) {
-                    if (card.cardQuantity < deckCard.cardQuantity) {
-
-                        console.log('less')
+                    if (card.cardQuantity === 0 ) {
                         stock = false
                     }
-                } else {
-                    stock = false
                 }
             }
-            res.status(200).json({action: 'checkStock', data: stock})
-        } else {
-            console.log('cehcking card')
-            let card = await Card.findById(purchaseId)
-            console.log(card)
-            if (card !== null) {
-                if (card.cardQuantity === 0 ) {
-                    stock = false
-                }
-            } else {
-                stock = false
-            }
-            res.status(200).json({action: 'checkStock', data: stock})
         }
+        res.status(200).json({action: 'check stock', data: stock})
     } catch(err) {
-        res.status(500).json({action: 'checkStock', err: "ERROR: " + err})
+        res.status(500).json({action: 'check stock', err: "ERROR: " + err})
     }
-
 }
 
 export { getAll, addOne, deleteOne, checkStock }
