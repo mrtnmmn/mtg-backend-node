@@ -72,17 +72,17 @@ async function login(req, res){
         const { error, value } = await schemaLogin.validateAsync(req.body)
     }
     catch (err) { 
-        return res.status(400).json({accion:'save', mensaje:'ERROR: Validation failed'+err}) 
+        return res.status(400).json({accion:'save', error:'ERROR: Validation failed'+err}) 
     }
 
     // Comprobar que el usuario si existe
     let existingUser = await User.findOne({email:req.body.email})
-    if(!existingUser) return res.status(400).json({accion:'save', mensaje:'ERROR: Unexisting user'}) 
+    if(!existingUser) return res.status(400).json({accion:'save', error:'ERROR: Unexisting user'}) 
    
    
     // Comprobamos si el password coincide
     const passwordValido = await bcrypt.compare(req.body.password, existingUser.password)
-    if(!passwordValido) return res.status(400).json({accion:'save', mensaje:'ERROR: Error in user/password'}) 
+    if(!passwordValido) return res.status(400).json({accion:'save', error:'ERROR: Error in user/password'}) 
   
     // Creamos el token jwt (jsonwebtoken)  Ver web: https://jwt.io/
     const token = jwt.sign( 
