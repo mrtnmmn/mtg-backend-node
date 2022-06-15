@@ -4,9 +4,9 @@ async function getAll(req, res) {
 
     try {
         let decks = await Deck.find()
-        res.status(200).json({action: getAll, data: decks})
+        res.status(200).json({action: 'get All', data: decks})
     } catch(err) {
-        console.log(err)
+        res.status(500).json({action: 'get All', error: err})
     }
 
 }
@@ -15,14 +15,10 @@ async function getOneFromId(req, res) {
 
     let deckId = req.body._id
 
-    console.log(typeof deckId)
-
     try {
         let deck = await Deck.findById(deckId)
-        console.log(deck)
         res.status(200).json({action: 'get one from id', data: deck})
     } catch(err) {
-        console.log(err)
         res.status(500).json({action: 'get one from id', error: err})
     }
 
@@ -36,7 +32,6 @@ async function getAllFromUser(req,res) {
         let decks = await Deck.find({user: userId})
         res.status(200).json({action: 'getAllFromUser', data: decks})
     } catch(err) {
-        console.log(err)
         res.status(500).json({action: 'getAllFromUser', error: err})
     }
 }
@@ -46,19 +41,13 @@ async function addOne(req,res) {
     const newDeck = new Deck(req.body.deck)
     const editing = req.body.editing
 
-    console.log(newDeck)
-    console.log(req.body.deck)
-
     try {
 
         if (editing) {
-            console.log(req.body.deck._id)
-            console.log('update')
             let deletedDeck = await Deck.findByIdAndDelete(req.body.deck._id)
             let savedDeck = await newDeck.save()
             res.status(200).json({action: 'add one deck', data: savedDeck})
         } else {
-            console.log('new')
             let savedDeck = await newDeck.save()
             res.status(200).json({action: 'add one deck', data: savedDeck})
         }

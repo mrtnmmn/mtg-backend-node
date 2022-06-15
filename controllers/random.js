@@ -9,7 +9,6 @@ async function getOne(req,res) {
         res.status(200).json({acction:'get one', data})
 
     }catch(err){
-        console.log(err)
         res.status(500).json({acction:'get one', messaje:'error'}) 
     }
 

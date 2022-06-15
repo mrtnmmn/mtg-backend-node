@@ -11,18 +11,11 @@ async function getAll(req, res) {
 
 async function addOne(req, res) {
 
-    console.log('adding')
-    
     let newCard = new Card(req.body)
-
-    console.log('adding')
-    console.log(newCard)
 
     try {
 
         let existingCard = await Card.findById(newCard._id)
-
-        console.log(existingCard)
 
         if (existingCard !== null) {
             let updatedCard = await Card.findByIdAndUpdate({_id: newCard._id}, {cardQuantity: existingCard.cardQuantity + 1})

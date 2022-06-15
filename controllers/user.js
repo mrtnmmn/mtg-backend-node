@@ -14,13 +14,8 @@ async function getAll(req,res) {
     try{
         let user = await User.find();
         res.status(200).json({action:'get all', data: user}) 
-        console.log(user)
-
     }catch(err){
-
-        console.log(err)
         res.status(500).json({action:'get all', messaje:'error'}) 
-        
     }
 
 }
@@ -38,7 +33,6 @@ async function getUserId(req, res) {
         }
         
     } catch(err) {
-        console.log(err)
         res.status(500).json({action:'get user id', messaje:'error'}) 
     }
 }
@@ -60,7 +54,6 @@ async function getAllDecks(req,res) {
         }
 
     } catch(err) {
-        console.log(err)
         res.status(500).json({action:'get all decks', messaje: 'error'})
     }
 }
@@ -103,8 +96,6 @@ async function register(req, res){
     // Validamos los campos
    /* try {
         const { error, value } = await schemaRegister.validateAsync(req.body)
-        console.log(value)
-        console.log(error)
     }
     catch (err) { 
         return res.status(400).json({accion:'save', mensaje:'error al guardar el usuario'+err}) 
